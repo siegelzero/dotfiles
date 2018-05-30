@@ -132,10 +132,10 @@ Plugin 'scrooloose/nerdtree'
 Plugin 'majutsushi/tagbar'
 
 " Editor enhancements
-Plugin 'sjl/gundo.vim'
 Plugin 'Yggdroot/indentLine'
 Plugin 'Valloric/ListToggle'
 Plugin 'scrooloose/nerdcommenter'
+Plugin 'mbbill/undotree'
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-unimpaired'
 
@@ -169,7 +169,7 @@ syntax on
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
 let g:ctrlp_clear_cache_on_exit = 0
-let g:ctrlp_custom_ignore = {'file': '\.c$\|\.htm$\|\.html$\|\.js$\|\.kid$\|\.ods$\|\.odt$\|\.png$\|\.xcf$'}
+let g:ctrlp_custom_ignore = 'env'
 let g:ctrlp_max_files = 0
 
 " Editor enhancements
@@ -189,7 +189,7 @@ let g:syntastic_check_on_wq = 0
 let g:syntastic_enable_highlighting = 1
 let g:syntastic_python_checkers=['flake8']
 "let g:syntastic_python_flake8_args='--max-line-length=120'
-let g:syntastic_python_flake8_exec = 'python3'
+let g:syntastic_python_flake8_exec = 'python3.6'
 let g:syntastic_python_flake8_args = ['-m', 'flake8']
 
 let g:mucomplete#enable_auto_at_startup = 1
@@ -263,7 +263,7 @@ set pastetoggle=<leader>tp
 let g:lt_quickfix_list_toggle_map = '<leader>tq'
 MapToggle <leader>ts spell
 nnoremap <leader>tt :TagbarToggle <CR>
-nnoremap <leader>tu :GundoToggle <CR>
+nnoremap <leader>tu :UndotreeToggle <CR>
 nnoremap <leader>tw :let &textwidth=(&textwidth==75 ? 120 : 75) <CR>:set textwidth? <CR>
 
 " Clear search results.

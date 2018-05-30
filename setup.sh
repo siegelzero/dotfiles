@@ -8,9 +8,9 @@ TPM=${HOME}"/.tmux/plugins/tpm"
 
 function create_symlinks() {
     echo "Creating symlinks"
-    ln -sf ".vimrc" "${HOME}/.vimrc"
-    ln -sf ".bashrc" "${HOME}/.bashrc"
-    ln -sf ".tmux.conf" "${HOME}/.tmux.conf"
+    ln -sf "${PWD}/.vimrc" "${HOME}/.vimrc"
+    ln -sf "${PWD}/.bashrc" "${HOME}/.bashrc"
+    ln -sf "${PWD}/.tmux.conf" "${HOME}/.tmux.conf"
 }
 
 function install_vundle() {
