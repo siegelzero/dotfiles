@@ -25,6 +25,7 @@ set wildmenu        "completion with menu
 
 
 " editor settings
+"set iskeyword-=_    "treat _ as a word separator character
 set ignorecase      "case insensitive searching
 set smartcase       "become case sensitive if you type uppercase characters
 set smarttab        "make <tab> and <backspace> smarter
@@ -40,6 +41,7 @@ set completeopt+=menuone
 set completeopt+=noselect
 set completeopt-=preview
 "set shortmess+=c
+set clipboard=unnamed
 
 set autochdir       "automatically change working dir to current file dir
 set hidden          "remember undo after quitting
@@ -146,8 +148,8 @@ Plugin 'altercation/vim-colors-solarized'
 
 " Completion/inspection
 Plugin 'davidhalter/jedi-vim'
-Plugin 'scrooloose/syntastic'
 Plugin 'lifepillar/vim-mucomplete'
+Plugin 'w0rp/ale'
 
 " Language plugins
 Plugin 'chrisbra/csv.vim'
@@ -179,18 +181,13 @@ let g:indentLine_enabled = 0
 "
 " Completion/inspection
 let g:jedi#popup_on_dot = 0
-let g:jedi#show_call_signatures = 2
+let g:jedi#show_call_signatures = 1
 let g:jedi#smart_auto_mappings = 0
 
-let g:syntastic_aggregate_errors = 1
-let g:syntastic_always_populate_loc_list=1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-let g:syntastic_enable_highlighting = 1
-let g:syntastic_python_checkers=['flake8']
-"let g:syntastic_python_flake8_args='--max-line-length=120'
-let g:syntastic_python_flake8_exec = 'python3.6'
-let g:syntastic_python_flake8_args = ['-m', 'flake8']
+let g:ale_virtualenv_dir_names = []
+let g:ale_linters = {'python': ['flake8', 'mypy']}
+"let g:ale_linters = {'python': ['flake8', 'pyre']}
+let g:ale_python_mypy_options = '--silent-imports --cache-dir=/dev/null/'
 
 let g:mucomplete#enable_auto_at_startup = 1
 "let g:mucomplete#chains = {}
@@ -224,21 +221,18 @@ map <C-h> :tabp<CR>
 
 nnoremap <silent> <F1> :%s/\s\+$//e<CR>
 "Toggle pep8
-"nnoremap <silent> <F2> :let g:syntastic_python_checkers=(g:syntastic_python_checkers==['pyflakes'] ? ['pyflakes', 'pep8'] : ['pyflakes']) <CR> :SyntasticCheck <CR>
 "nnoremap <silent> <F4> :Gblame<CR>
 "nnoremap <silent> <F7> :NERDTreeToggle<CR>
 "nnoremap <silent> <F9> :Errors<CR>
 "nnoremap <silent> <F10> :lclose<CR>
 
 " Errors
-nnoremap <leader>ec :SyntasticCheck <CR>
 nnoremap <leader>en :lnext <CR>
-nnoremap <leader>er :SyntasticReset <CR>
 nnoremap <leader>ep :lprev <CR>
-nnoremap <leader>es :let b:syntastic_skip_checks = 1 <CR>
 
 " Breakpoints
-nnoremap <leader>ib oimport pudb; pudb.set_trace() #BREAKPOINT<Esc>
+nnoremap <leader>ib oimport pudb; pudb.set_trace() # NOQA<Esc>
+nnoremap <leader>rb oimport pudb.remote; pudb.remote.set_trace(term_size=(200, 40)) #NOQA<Esc>
 
 " Edit/Source .vimrc
 nnoremap <leader>fe :e $MYVIMRC <CR>
@@ -254,10 +248,9 @@ command! -nargs=+ MapToggle call MapToggle(<f-args>)
 
 "Toggle shortcuts
 nnoremap <leader>tb :Gblame <CR>
-nnoremap <leader>te :SyntasticToggleMode <CR>
 nnoremap <leader>tg :GitGutterToggle <CR>
 nnoremap <leader>ti :IndentLinesToggle <CR>
-let g:lt_location_list_toggle_map = '<leader>tl'
+nnoremap <leader>tl :set invnumber <CR>
 nnoremap <leader>tn :NERDTreeToggle <CR>
 set pastetoggle=<leader>tp
 let g:lt_quickfix_list_toggle_map = '<leader>tq'

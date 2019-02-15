@@ -8,9 +8,8 @@ case $- in
       *) return;;
 esac
 
-# don't put duplicate lines or lines starting with space in the history.
-# See bash(1) for more options
-HISTCONTROL=ignoreboth
+# avoid duplicates
+export HISTCONTROL=ignoredups:erasedups
 
 # append to the history file, don't overwrite it
 shopt -s histappend
@@ -20,16 +19,17 @@ export HISTSIZE=
 export HISTFILESIZE=
 export HISTFILE=~/.bash_eternal_history
 
+# allow tests run via invoke to use pseudoterminal for debugging
+export INVOKE_RUN_PTY=1
+
+# After each command, append to the history file and reread it
+#export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
+
+# Append to history after each command.
+export PROMPT_COMMAND="history -a; $PROMPT_COMMAND"
+
 bind '"\e[A": history-search-backward'
 bind '"\e[B": history-search-forward'
-
-#export PYTHONPATH=$PYTHONPATH:/home/kbrown/code/
-export PATH=$PATH:/home/kbrown/sage/
-export PATH=$PATH:/home/kbrown/magma
-export PATH=$PATH:/home/kbrown/maple/bin/
-export PATH=$PATH:/home/kbrown/gurobi600/linux64/bin/
-
-export GRB_LICENSE_FILE='/home/kbrown/gurobi600/gurobi.lic'
 
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
@@ -80,6 +80,7 @@ alias uu='cd ../..'
 alias wv='wavpack -hhmx3 *.wav && wvunpack -v *.wv && wvgain -a *.wv'
 #alias djvubind='/home/kbrown/bin/djvubind/bin/djvubind'
 alias eim='emacs -nw'
+alias vim='nvim'
 
 alias lynder="~/git/lynder/lynder.py"
 
@@ -114,6 +115,8 @@ if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
 
+alias pack='ag --python -B4 -C4'
+
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
@@ -139,3 +142,7 @@ function venv() {
 
 # disable the default virtualenv prompt change
 export VIRTUAL_ENV_DISABLE_PROMPT=1
+
+function dkillall() {
+    docker rm -f $(docker ps -a -q)
+}
